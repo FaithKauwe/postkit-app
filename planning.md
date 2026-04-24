@@ -39,7 +39,7 @@ Secondary goal: understand every major piece of code and annotate heavily.
   - [✅] Post preview section
 - [ ] Add semantic headings for each section (`h2`) so the screen is easy to scan
 - [ ] Keep styling minimal (spacing only, no polish yet)
-- [ ] Verify app renders without runtime/type errors
+- [✅] Verify app renders without runtime/type errors
 
 **Definition of done:** static section layout exists and is rendering in browser with no errors.
 
@@ -49,14 +49,14 @@ Secondary goal: understand every major piece of code and annotate heavily.
 
 
 - [ ] Extract and modularize files from App.tsx
-- [ ] Create initial `posts` state with 2-3 sample posts matching shared `Post` type
-- [ ] Render list by mapping state to rows/cards
-- [ ] Show required list fields now:
-  - [ ] title
-  - [ ] status
-  - [ ] tags
-  - [ ] date (created or updated)
-  - [ ] reading-time placeholder or package-based value if quick to wire
+- [✅] Create initial `posts` state with 2-3 sample posts matching shared `Post` type
+- [✅] Render list by mapping state to rows/cards
+- [✅] Show required post fields now:
+  - [✅] title
+  - [✅] status
+  - [✅] tags
+  - [✅] date (created or updated)
+  - [✅] reading-time placeholder or package-based value if quick to wire
 - [ ] Add `selectedPostId` state and click-to-select behavior
 - [ ] Highlight selected post visually (simple border/background)
 
