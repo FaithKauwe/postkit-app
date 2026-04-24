@@ -1,5 +1,7 @@
 import MitchellSmokeReport from './mitchells-smoke-report'
 import PostList from './components/PostList'
+import Editor from './components/Editor'
+import Preview from './components/Preview'
 
 
 
@@ -36,16 +38,10 @@ function App() {
       <PostList />
 
       {/* ===== SECTION 4: EDITOR ===== */}
-      <section className="mb-8 p-4 bg-white rounded shadow">
-        <h2 className="text-xl font-semibold mb-4">Editor</h2>
-        <p className="text-gray-500">[Form to create and edit posts]</p>
-      </section>
+      <Editor />
 
       {/* ===== SECTION 5: PREVIEW ===== */}
-      <section className="mb-8 p-4 bg-white rounded shadow">
-        <h2 className="text-xl font-semibold mb-4">Preview</h2>
-        <p className="text-gray-500">[Post preview will appear here]</p>
-      </section>
+      <Preview />
     </div>
   )
 }
