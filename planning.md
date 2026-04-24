@@ -37,8 +37,8 @@ Secondary goal: understand every major piece of code and annotate heavily.
   - [✅] Post list section
   - [✅] Post editor section
   - [✅] Post preview section
-- [ ] Add semantic headings for each section (`h2`) so the screen is easy to scan
-- [ ] Keep styling minimal (spacing only, no polish yet)
+- [✅] Add semantic headings for each section (`h2`) so the screen is easy to scan
+- [✅] Keep styling minimal (spacing only, no polish yet)
 - [✅] Verify app renders without runtime/type errors
 
 **Definition of done:** static section layout exists and is rendering in browser with no errors.
@@ -57,8 +57,10 @@ Secondary goal: understand every major piece of code and annotate heavily.
   - [✅] tags
   - [✅] date (created or updated)
   - [✅] reading-time placeholder or package-based value if quick to wire
-- [ ] Add `selectedPostId` state and click-to-select behavior
-- [ ] Highlight selected post visually (simple border/background)
+- [✅] Add `selectedPostId` state and click-to-select behavior
+- [✅] Highlight selected post visually (simple border/background)
+- [✅] Install Zustand. Zustand manages state shared across components and is a replacement for prop drilling or react redux. uses a "store" system: a single file that any component can import directly. the store holds state (the data that is being acted on) and actions (the functions to update the the state data)
+- [] Set up Zustand store file
 
 **Definition of done:** selecting a post updates selection state and list is state-driven.
 

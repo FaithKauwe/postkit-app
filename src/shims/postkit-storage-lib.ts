@@ -1,6 +1,14 @@
 /**
- * Mirrors `postkit-storage-lib` (README API) until the published package ships a built `index.js`.
- * Keep in sync with: node_modules/postkit-storage-lib/src/types.ts
+ * Local storage utility for PostKit.
+ * 
+ * This is a "shim" — it stands in for the broken `postkit-storage-lib` npm package.
+ * Any import from 'postkit-storage-lib' gets redirected here by Vite (see vite.config.ts).
+ * this file provides the actual functions (savePosts, loadPosts, etc.) that read/write to localStorage
+ * 
+ * Uses browser localStorage API:
+ * - Data persists even after page refresh or browser close
+ * - Stores strings only, so we JSON.stringify/parse our Post arrays
+ * - ~5MB limit per domain (plenty for this app)
  */
 export type PostStatus = 'draft' | 'review' | 'published'
 
