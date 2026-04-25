@@ -5,6 +5,8 @@ function Editor() {
   // Get posts and selectedPostId from Zustand store
   const posts = usePostStore((state) => state.posts)
   const selectedPostId = usePostStore((state) => state.selectedPostId)
+  const selectPost = usePostStore((state) => state.selectPost)
+
 
   // formData is the name of the object and setFormData is the function to update it
   // the object inside is the initial value — all empty strings, status defaults to 'draft'
@@ -19,7 +21,19 @@ function Editor() {
     category: '',
     status: 'draft',
   })
-
+  
+  
+  const handleNewPost = () => {
+    selectPost(null)  // reset the arg (which would have been a PostID num from zustand store) to null since this is a blank post
+    setFormData({
+      title: '',
+      body: '',
+      author: '',
+      tags: '',
+      category: '',
+      status: 'draft',
+    })
+  }
   // useEffect is a react hook that detects a change- runs when selectedPostId changes
   // finds the selected post and copies its data into the form
   useEffect(() => {
@@ -42,6 +56,14 @@ function Editor() {
   return (
         <section className="mb-8 p-4 bg-white rounded shadow">
         <h2 className="text-xl font-semibold mb-4">Editor</h2>
+
+        <button 
+  onClick={handleNewPost}
+  className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+>
+  Create New Post
+</button>
+
         {/* Title field */}
         <label className="block mb-4">
           <span className="text-gray-700">Title</span>
@@ -49,6 +71,7 @@ function Editor() {
             type="text"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            placeholder="Enter post title..."
             className="mt-1 block w-full border border-gray-300 rounded p-2"
           />
         </label>
@@ -59,6 +82,7 @@ function Editor() {
             type="text"
             value={formData.author}
             onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+            placeholder="Author name..."
             className="mt-1 block w-full border border-gray-300 rounded p-2"
           />
         </label>
@@ -69,6 +93,7 @@ function Editor() {
     value={formData.body}
     onChange={(e) => setFormData({ ...formData, body: e.target.value })}
     rows={6}
+    placeholder="Write your post content..."
     className="mt-1 block w-full border border-gray-300 rounded p-2"
   />
 </label>
@@ -79,6 +104,7 @@ function Editor() {
             type="text"
             value={formData.tags}
             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+            placeholder="comedy, grail, knights..."
             className="mt-1 block w-full border border-gray-300 rounded p-2"
           />
         </label>
@@ -89,6 +115,7 @@ function Editor() {
             type="text"
             value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            placeholder="e.g. Holy Grail, Flying Circus..."
             className="mt-1 block w-full border border-gray-300 rounded p-2"
           />
         </label>

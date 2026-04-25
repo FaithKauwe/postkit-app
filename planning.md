@@ -79,9 +79,9 @@ Secondary goal: understand every major piece of code and annotate heavily.
   - [✅] status
   - [✅] status
 - [✅] On selecting a post, populate form with that post's values
-- [ ] Add "New Post" action to reset form and switch to create mode
-- [ ] Keep form controlled (single source of truth in state)
-- [ ] Add simple labels/placeholders for clarity
+- [✅] Add "New Post" action to reset form and switch to create mode
+- [✅] Keep form controlled , every form field's value comes from formData, not the DOM
+- [✅] Add simple labels/placeholders for clarity
 
 **Definition of done:** user can switch between editing an existing post and drafting a new post.
 
