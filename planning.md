@@ -48,7 +48,7 @@ Secondary goal: understand every major piece of code and annotate heavily.
 **Goal:** posts come from React state, not hardcoded JSX.
 
 
-- [ ] Extract and modularize files from App.tsx
+- [✅] Extract and modularize files from App.tsx
 - [✅] Create initial `posts` state with 2-3 sample posts matching shared `Post` type
 - [✅] Render list by mapping state to rows/cards
 - [✅] Show required post fields now:
@@ -60,7 +60,7 @@ Secondary goal: understand every major piece of code and annotate heavily.
 - [✅] Add `selectedPostId` state and click-to-select behavior
 - [✅] Highlight selected post visually (simple border/background)
 - [✅] Install Zustand. Zustand manages state shared across components and is a replacement for prop drilling or react redux. uses a "store" system: a single file that any component can import directly. the store holds state (the data that is being acted on) and actions (the functions to update the the state data)
-- [] Set up Zustand store file
+- [✅] Set up Zustand store file
 
 **Definition of done:** selecting a post updates selection state and list is state-driven.
 
@@ -68,14 +68,17 @@ Secondary goal: understand every major piece of code and annotate heavily.
 
 **Goal:** one form supports new post creation and editing existing post fields.
 
-- [ ] Add form state for editable fields:
-  - [ ] title
-  - [ ] body
-  - [ ] author
-  - [ ] tags input
-  - [ ] category
-  - [ ] status
-- [ ] On selecting a post, populate form with that post's values
+- [✅] Add form state for editable fields:
+  - [✅] title
+  - [✅] body
+  - [✅] author
+  - [✅] tags input
+  - [✅] category
+  - [✅] status
+  - [✅] status
+  - [✅] status
+  - [✅] status
+- [✅] On selecting a post, populate form with that post's values
 - [ ] Add "New Post" action to reset form and switch to create mode
 - [ ] Keep form controlled (single source of truth in state)
 - [ ] Add simple labels/placeholders for clarity
