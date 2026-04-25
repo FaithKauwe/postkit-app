@@ -6,7 +6,7 @@ function PostList() {
   // Pull what we need from the store — no props needed!
   const posts = usePostStore((state) => state.posts)
   const selectedPostId = usePostStore((state) => state.selectedPostId)
-  const selectPost = usePostStore((state) => state.selectPost)
+  const setSelectedPostId = usePostStore((state) => state.setSelectedPostId)
 
   return (
     <section className="mb-8 p-4 bg-white rounded shadow">
@@ -16,7 +16,7 @@ function PostList() {
         {posts.map((post) => (
           <div
             key={post.id}
-            onClick={() => selectPost(post.id)}
+            onClick={() => setSelectedPostId(post.id)}
             className={`p-4 border rounded cursor-pointer ${
               selectedPostId === post.id
                 ? 'border-blue-500 bg-blue-50'

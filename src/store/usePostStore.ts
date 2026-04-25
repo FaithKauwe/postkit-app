@@ -48,7 +48,7 @@ type PostStore = {
   selectedPostId: string | null
 
   // ACTIONS
-  selectPost: (id: string | null) => void
+  setSelectedPostId: (id: string | null) => void
   addPost: (post: Post) => void
   updatePost: (id: string, changes: Partial<Post>) => void
   deletePost: (id: string) => void
@@ -61,7 +61,7 @@ export const usePostStore = create<PostStore>((set) => ({
   selectedPostId: null,
 
   // Action: set selectedPostId to the given id (or null to deselect)
-  selectPost: (id) => set({ selectedPostId: id }),
+  setSelectedPostId: (id) => set({ selectedPostId: id }),
 
   // Action: add a new post to the array
   addPost: (post) =>

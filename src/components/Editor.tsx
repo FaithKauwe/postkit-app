@@ -2,10 +2,13 @@ import { usePostStore } from '../store/usePostStore'
 import { useState, useEffect } from 'react'
 
 function Editor() {
-  // Get posts and selectedPostId from Zustand store
+  // Get posts and selectedPostId from Zustand store. these don't get imported with other imports. they are part of the
+  // usePostStore funciton, so only that one gets imported, then these all get assigned to local consts 
   const posts = usePostStore((state) => state.posts)
   const selectedPostId = usePostStore((state) => state.selectedPostId)
-  const selectPost = usePostStore((state) => state.selectPost)
+  const setSelectedPostId = usePostStore((state) => state.setSelectedPostId)
+  const addPost = usePostStore((state) => state.addPost)
+  const updatePost = usePostStore((state) => state.updatePost)
 
 
   // formData is the name of the object and setFormData is the function to update it
@@ -24,7 +27,7 @@ function Editor() {
   
   
   const handleNewPost = () => {
-    selectPost(null)  // reset the arg (which would have been a PostID num from zustand store) to null since this is a blank post
+    setSelectedPostId(null)  // reset the arg (which would have been a PostID number(string) from zustand store) to null since this is a blank post
     setFormData({
       title: '',
       body: '',
@@ -33,6 +36,42 @@ function Editor() {
       category: '',
       status: 'draft',
     })
+  }
+
+  const handleSave = () => {
+    // create timestamp
+    const now = new Date().toISOString()
+    // Convert tags string to array (split by comma, trim whitespace)
+    const tagsArray = formData.tags.split(',').map((t) => t.trim()).filter((t) => t)
+
+    if (selectedPostId === null) {
+      // build a full new post object with all fields supplied by the user input from the form
+      const newPost = {
+        id: crypto.randomUUID(),  // crypto is a global object available in all modern browsers. guaranteed to be unique every time you call it
+        title: formData.title,
+        body: formData.body,
+        author: formData.author,
+        tags: tagsArray,
+        category: formData.category,
+        status: formData.status as 'draft' | 'review' | 'published',
+        createdAt: now,
+        updatedAt: now,
+      }
+      // call the addPost function from store which saves the post to the array of posts. use newPost as the arg
+      addPost(newPost)
+      setSelectedPostId(newPost.id)  // set the id and highlight in the list, load in the editor (ui experience)
+    } else {
+      // update existing post, since the form fields shares one state, give all fields as args and replace the entire form, the changes will override any differeing originals
+      updatePost(selectedPostId, {
+        title: formData.title,
+        body: formData.body,
+        author: formData.author,
+        tags: tagsArray,
+        category: formData.category,
+        status: formData.status as 'draft' | 'review' | 'published',
+        updatedAt: now,
+      })
+    }
   }
   // useEffect is a react hook that detects a change- runs when selectedPostId changes
   // finds the selected post and copies its data into the form
@@ -57,12 +96,20 @@ function Editor() {
         <section className="mb-8 p-4 bg-white rounded shadow">
         <h2 className="text-xl font-semibold mb-4">Editor</h2>
 
-        <button 
-  onClick={handleNewPost}
-  className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
->
-  Create New Post
-</button>
+        <div className="flex gap-2 mb-4">
+  <button 
+    onClick={handleNewPost}
+    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+  >
+    New Post
+  </button>
+  <button 
+    onClick={handleSave}
+    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+  >
+    Save
+  </button>
+</div>
 
         {/* Title field */}
         <label className="block mb-4">
