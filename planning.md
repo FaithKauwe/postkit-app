@@ -89,15 +89,15 @@ Secondary goal: understand every major piece of code and annotate heavily.
 
 **Goal:** submit form updates app data immediately.
 
-- [ ] Add submit handler with two paths:
-  - [ ] create mode -> append new post
-  - [ ] edit mode -> update existing post by id
-- [ ] Ensure timestamps are set/updated (`createdAt`, `updatedAt`)
-- [ ] Ensure id generation is deterministic/simple (timestamp + random suffix is fine)
+- [✅] Add submit handler with two paths:
+  - [✅] create mode -> append new post
+  - [✅] edit mode -> update existing post by id
+- [✅] Ensure timestamps are set/updated (`createdAt`, `updatedAt`)
+- [✅] Ensure id generation is deterministic/simple (timestamp + random suffix is fine)
 - [ ] After save:
-  - [ ] list updates immediately
-  - [ ] saved post becomes selected
-  - [ ] preview reflects latest data
+  - [✅] list updates immediately
+  - [✅] saved post becomes selected
+  - [✅] preview reflects latest data
 - [ ] Add basic "Cancel edit" behavior (optional if time remains)
 
 **Definition of done:** create and edit both work end-to-end in memory.
@@ -106,16 +106,16 @@ Secondary goal: understand every major piece of code and annotate heavily.
 
 **Goal:** posts survive page reload (R8 baseline).
 
-- [ ] Create `src/lib/storage.ts` wrapper with app-facing functions:
-  - [ ] `loadPosts()`
-  - [ ] `savePosts(posts)`
-- [ ] Start with known working path (shim/workaround) to avoid blocking on broken package publish
-- [ ] Load persisted posts on app init
-- [ ] Save posts whenever posts state changes (effect)
-- [ ] Verify manually:
-  - [ ] add/edit post
-  - [ ] refresh browser
-  - [ ] data remains
+- [✅] Create `src/lib/storage.ts` wrapper with app-facing functions:
+  - [✅] `loadPosts()`
+  - [✅] `savePosts(posts)`
+- [✅] Start with known working path (shim/workaround) to avoid blocking on broken package publish
+- [✅] Load persisted posts on app init
+- [✅] Save posts whenever posts state changes (effect)
+- [✅] Verify manually:
+  - [✅] add/edit post
+  - [✅] refresh browser
+  - [✅] data remains
 
 **Definition of done:** no data loss across reloads for baseline flow.
 

@@ -24,10 +24,12 @@ export type Post = {
   updatedAt: string
 }
 
+// this function will get used by the wrapper method in storage.ts. it converts the post objects to JSON strings to store in the shim
 export function savePosts(key: string, posts: Post[]): void {
   localStorage.setItem(key, JSON.stringify(posts))
 }
 
+// this function will get used by the wrapper method in storage.ts. it parses the json objects into post objects that match the Post type and can be used by the rest of the app
 export function loadPosts(key: string): Post[] {
   const data = localStorage.getItem(key)
   if (!data) return []
