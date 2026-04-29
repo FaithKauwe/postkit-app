@@ -157,23 +157,23 @@ Exit criteria:
   - [✅] filter
   - [✅] sort
 - [✅] Render filtered list (do not mutate original posts)
-- [ ] Verify combinations (search+filter, filter+sort, all three)
-- [ ] Add comments on pipeline ordering and reasoning
+- [✅] Verify combinations (search+filter, filter+sort, all three)
+- [✅] Add comments on pipeline ordering and reasoning
 
 Exit criteria:
-- [ ] R2, R3, R4 functional with combinable controls
+- [✅] R2, R3, R4 functional with combinable controls
 
 ---
 
 ## Monday (4-5 hours) — Preview Metadata + Final Pass
 
-- [ ] Build preview panel from selected post/form draft
-- [ ] Show:
-  - [ ] unique slug
-  - [ ] excerpt
-  - [ ] reading time
-  - [ ] formatted date
-  - [ ] readable status label/color
+- [✅] Build preview panel from selected post/form draft
+- [✅] Show:
+  - [✅] unique slug
+  - [✅] excerpt
+  - [✅] reading time
+  - [✅] formatted date
+  - [✅] readable status label/color
 - [ ] Final acceptance-criteria walkthrough checklist
 - [ ] Bug fixes and small UX cleanup
 - [ ] Optional only if complete: start Option A layout conversion

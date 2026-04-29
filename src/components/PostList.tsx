@@ -154,6 +154,11 @@ function PostList() {
               </div>
               <p className="text-sm text-gray-500 mt-1">by {post.author}</p>
               <p className="text-xs text-gray-500 mt-1">created at {formatDate(post.createdAt)}</p>
+              {post.updatedAt !== post.createdAt ? (
+                <p className="text-xs text-gray-500 mt-1">
+                  updated {formatDate(post.updatedAt)}
+                </p>
+              ) : null}
               <p className="text-xs text-gray-500 mt-1">{formatTime(readingTime(post.body))} to read</p>
               <div className="mt-2 flex gap-2">
                 {post.tags.map((tag) => (
