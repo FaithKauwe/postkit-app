@@ -150,13 +150,13 @@ Exit criteria:
 ## Sunday (4 hours) — Filter, Sort, Search
 
 - [✅] Implement search input and query state
-- [ ] Implement status filter + tag filter state
-- [ ] Implement sort mode state (date/title + direction)
-- [ ] Build one derived list pipeline:
-  - [ ] search
-  - [ ] filter
-  - [ ] sort
-- [ ] Render derived list (do not mutate original posts)
+- [✅] Implement status filter + tag filter state
+- [✅] Implement sort mode state (date/title + direction)
+- [✅] Build one derived list pipeline:
+  - [✅] search
+  - [✅] filter
+  - [✅] sort
+- [✅] Render filtered list (do not mutate original posts)
 - [ ] Verify combinations (search+filter, filter+sort, all three)
 - [ ] Add comments on pipeline ordering and reasoning
 

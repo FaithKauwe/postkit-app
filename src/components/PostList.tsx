@@ -1,10 +1,10 @@
 // useMemo is a React hook that remembers a computed value between renders and only recomputes when something important changes.
 import { useMemo } from 'react'
-import { usePostStore, type StatusFilter } from '../store/usePostStore'
+import { usePostStore, type StatusFilter, type ListSortBy, type ListSortDirection } from '../store/usePostStore'
 import { formatDate } from 'postkit-date-status-display'
 import { readingTime, formatTime } from 'postkit-reading-time'
 import { searchPosts } from 'postkit-search-library'
-import { filterByStatus, filterByTag } from 'postkit-filter-sort'
+import { filterByStatus, filterByTag, sortByDate, sortByTitle } from 'postkit-filter-sort'
 
 function PostList() {
   // Pull what we need from the store — no props needed!
@@ -15,6 +15,10 @@ function PostList() {
   const setStatusFilter = usePostStore((state) => state.setStatusFilter)
   const tagFilter = usePostStore((state) => state.tagFilter)
   const setTagFilter = usePostStore((state) => state.setTagFilter)
+  const sortBy = usePostStore((state) => state.sortBy)
+  const setSortBy = usePostStore((state) => state.setSortBy)
+  const sortDirection = usePostStore((state) => state.sortDirection)
+  const setSortDirection = usePostStore((state) => state.setSortDirection)
   const selectedPostId = usePostStore((state) => state.selectedPostId)
   const setSelectedPostId = usePostStore((state) => state.setSelectedPostId)
   // part of tag suhggestions behavior, not part of requirements, but leaving for extra polish, the 
@@ -34,6 +38,13 @@ function PostList() {
   if (tag !== '') {
     list = filterByTag(list, tag)
   }
+  // the list always gets sorted, regardless of what the other consitional branches do
+  // the only unknonwns are *how it gets sorted, based on the users choice
+  list =
+    sortBy === 'date'
+      ? sortByDate(list, sortDirection)
+  // this will be the alphabetical sort
+      : sortByTitle(list, sortDirection)
   // visiblePosts is whatever is left after all the other consitional branches have been executed, if none of them are touched
   // it will just be the og list of posts
   const visiblePosts = list
@@ -87,6 +98,36 @@ function PostList() {
             <option key={t} value={t} />
           ))}
         </datalist>
+      </label>
+{/* sorting controls */}
+      <label className="block mb-4">
+        <span className="text-gray-700 text-sm">Sort by</span>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as ListSortBy)}
+          className="mt-1 block w-full border border-gray-300 rounded p-2"
+          aria-label="Sort by field"
+        >
+          <option value="date">Date created</option>
+          <option value="title">Title</option>
+        </select>
+      </label>
+
+      <label className="block mb-4">
+        <span className="text-gray-700 text-sm">Sort direction</span>
+        <select
+          value={sortDirection}
+          onChange={(e) => setSortDirection(e.target.value as ListSortDirection)}
+          className="mt-1 block w-full border border-gray-300 rounded p-2"
+          aria-label="Sort direction"
+        >
+          <option value="asc">
+            {sortBy === 'date' ? 'Oldest first' : 'A–Z'}
+          </option>
+          <option value="desc">
+            {sortBy === 'date' ? 'Newest first' : 'Z–A'}
+          </option>
+        </select>
       </label>
 
       <div className="space-y-4">
