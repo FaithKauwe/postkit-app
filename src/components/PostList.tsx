@@ -1,17 +1,35 @@
-import { usePostStore } from '../store/usePostStore'
+import { usePostStore, type StatusFilter } from '../store/usePostStore'
 import { formatDate } from 'postkit-date-status-display'
 import { readingTime, formatTime } from 'postkit-reading-time'
 import { searchPosts } from 'postkit-search-library'
+import { filterByStatus, filterByTag } from 'postkit-filter-sort'
 
 function PostList() {
+  // Pull what we need from the store — no props needed!
   const posts = usePostStore((state) => state.posts)
   const searchQuery = usePostStore((state) => state.searchQuery)
   const setSearchQuery = usePostStore((state) => state.setSearchQuery)
+  const statusFilter = usePostStore((state) => state.statusFilter)
+  const setStatusFilter = usePostStore((state) => state.setStatusFilter)
+  const tagFilter = usePostStore((state) => state.tagFilter)
   const selectedPostId = usePostStore((state) => state.selectedPostId)
   const setSelectedPostId = usePostStore((state) => state.setSelectedPostId)
-
-  const visiblePosts = searchPosts(posts, searchQuery)
-
+  // use let so that we can reassign list as we travel down the condional branches
+  // satisfying diff conditions will result in diff functions being applied to list, resultng in diff list objects being returned to user
+  let list = searchPosts(posts, searchQuery)
+  if (statusFilter !== 'all') {
+    list = filterByStatus(list, statusFilter)
+  }
+  const tag = tagFilter.trim()
+  if (tag !== '') {
+    list = filterByTag(list, tag)
+  }
+  // visiblePosts is whatever is left after all the other consitional branches have been executed, if none of them are touched
+  // it will just be the og list of posts
+  const visiblePosts = list
+  // render the seaerch query input box for the user
+  // after introducing the search logic, posts gets replaced with visiblePosts.  If seearch query is empty, visiblePosts array that
+  // gets mapped over is just the og posts array with no search filter applied
   return (
     <section className="mb-8 p-4 bg-white rounded shadow">
       <h2 className="text-xl font-semibold mb-4">Your Posts</h2>
@@ -26,6 +44,21 @@ function PostList() {
           className="mt-1 block w-full border border-gray-300 rounded p-2"
           aria-label="Search posts"
         />
+      </label>
+
+      <label className="block mb-4">
+        <span className="text-gray-700 text-sm">Status</span>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+          className="mt-1 block w-full border border-gray-300 rounded p-2"
+          aria-label="Filter by status"
+        >
+          <option value="all">All statuses</option>
+          <option value="draft">Draft</option>
+          <option value="review">Review</option>
+          <option value="published">Published</option>
+        </select>
       </label>
 
       <div className="space-y-4">
