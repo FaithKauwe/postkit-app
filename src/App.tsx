@@ -28,19 +28,13 @@ function App() {
         <p className="text-gray-600">Manage your posts from draft to published</p>
       </header>
 
-      {/* ===== SECTION 2: CONTROLS (search, filter, sort) ===== */}
-      <section className="mb-8 p-4 bg-white rounded shadow">
-        <h2 className="text-xl font-semibold mb-4">Controls</h2>
-        <p className="text-gray-500">[Search, filter, and sort controls will go here]</p>
-      </section>
-
-      {/* ===== SECTION 3: POST LIST ===== */}
+      {/* ===== SECTION 2: POST LIST (+ search / filter in PostList) ===== */}
       <PostList />
 
-      {/* ===== SECTION 4: EDITOR ===== */}
+      {/* ===== SECTION 3: EDITOR ===== */}
       <Editor />
 
-      {/* ===== SECTION 5: PREVIEW ===== */}
+      {/* ===== SECTION 4: PREVIEW ===== */}
       <Preview />
     </div>
   )

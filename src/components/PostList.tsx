@@ -1,3 +1,5 @@
+// useMemo is a React hook that remembers a computed value between renders and only recomputes when something important changes.
+import { useMemo } from 'react'
 import { usePostStore, type StatusFilter } from '../store/usePostStore'
 import { formatDate } from 'postkit-date-status-display'
 import { readingTime, formatTime } from 'postkit-reading-time'
@@ -12,8 +14,16 @@ function PostList() {
   const statusFilter = usePostStore((state) => state.statusFilter)
   const setStatusFilter = usePostStore((state) => state.setStatusFilter)
   const tagFilter = usePostStore((state) => state.tagFilter)
+  const setTagFilter = usePostStore((state) => state.setTagFilter)
   const selectedPostId = usePostStore((state) => state.selectedPostId)
   const setSelectedPostId = usePostStore((state) => state.setSelectedPostId)
+  // part of tag suhggestions behavior, not part of requirements, but leaving for extra polish, the 
+  // build an array of all unique tags used on all posts. useMemo allows this calculation to be redone minimally, 
+  // only when "posts" changes
+  const uniqueTagsFromPosts = useMemo(
+    () => [...new Set(posts.flatMap((p) => p.tags))].sort(),
+    [posts],
+  )
   // use let so that we can reassign list as we travel down the condional branches
   // satisfying diff conditions will result in diff functions being applied to list, resultng in diff list objects being returned to user
   let list = searchPosts(posts, searchQuery)
@@ -59,6 +69,24 @@ function PostList() {
           <option value="review">Review</option>
           <option value="published">Published</option>
         </select>
+      </label>
+{/* datalist is a built in HTML feature. the browser decides how to show the options, I only provide the list of possible values, I don't write the filter for the suggestions */}
+      <label className="block mb-4">
+        <span className="text-gray-700 text-sm">Tag</span>
+        <input
+          type="text"
+          list="post-tag-filter-options"
+          value={tagFilter}
+          onChange={(e) => setTagFilter(e.target.value)}
+          placeholder="Filter by tag…"
+          className="mt-1 block w-full border border-gray-300 rounded p-2"
+          aria-label="Filter by tag"
+        />
+        <datalist id="post-tag-filter-options">
+          {uniqueTagsFromPosts.map((t) => (
+            <option key={t} value={t} />
+          ))}
+        </datalist>
       </label>
 
       <div className="space-y-4">
