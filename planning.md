@@ -5,7 +5,19 @@ Primary goal: finish required acceptance criteria by Monday night.
 Secondary goal: understand every major piece of code and annotate heavily.
 
 ---
+## Acceptance Criteria
 
+Your implementation is complete when a user can:
+
+- [ ] See a list of their posts with title, status, tags, reading time, and date
+- [ ] Filter the list by status or tag
+- [ ] Sort the list by date or title
+- [ ] Search posts and get accurate results
+- [ ] Create a new post and see it appear in the list
+- [ ] Edit an existing post and see the changes saved
+- [ ] See validation feedback when required fields are missing
+- [ ] See a slug, excerpt, reading time, and formatted date in the post preview
+- [ ] Close and reopen the browser and find their posts still there
 ## Ground Rules
 
 - [ ] Build **Option B** first (stacked layout): controls -> list -> editor -> preview
@@ -115,36 +127,29 @@ Secondary goal: understand every major piece of code and annotate heavily.
 - [✅] Verify manually:
   - [✅] add/edit post
   - [✅] refresh browser
-  - [✅] data remains
+  - [✅] data remains through browser refresh and across server quit and restart
 
 **Definition of done:** no data loss across reloads for baseline flow.
 
-### Tomorrow Exit Criteria (must hit before stopping)
-- [ ] Option B sections are built
-- [ ] List renders from state
-- [ ] Create and edit both work in state
-- [ ] Persistence done OR explicitly marked first task for Friday
-
----
 
 ## Friday (2 hours) — Validation + Persistence Hardening
 
-- [ ] Finish persistence if incomplete
-- [ ] Integrate validation package for title/body/status checks
-- [ ] Show inline validation feedback
-- [ ] Prevent save when invalid
-- [ ] Add comments explaining validation flow and error state decisions
+- [✅] Finish persistence if incomplete
+- [✅] Integrate validation package for title/body/status checks
+- [✅] Show inline validation feedback
+- [✅] Prevent save when invalid
+- [✅] Add comments explaining validation flow and error state decisions
 
 Exit criteria:
-- [ ] Required-field feedback is visible
-- [ ] Invalid post cannot be saved
-- [ ] Reload still restores data
+- [✅] Required-field feedback is visible
+- [✅] Invalid post cannot be saved
+- [✅] Reload still restores data
 
 ---
 
 ## Sunday (4 hours) — Filter, Sort, Search
 
-- [ ] Implement search input and query state
+- [✅] Implement search input and query state
 - [ ] Implement status filter + tag filter state
 - [ ] Implement sort mode state (date/title + direction)
 - [ ] Build one derived list pipeline:
@@ -206,4 +211,19 @@ Exit criteria:
 - [ ] Create/edit + validation flow is reliable
 - [ ] Preview metadata (slug/excerpt/reading/date/status) visible
 - [ ] Code is commented enough that future-you can explain every major flow
+
+
+## Boundaries Section
+ Identify my:
+
+ State Boundaries:
+ Library Boundaries:
+  the point where your app calls a PostKit package.
+  - In Preview.tsx: formatDate (from postkit-date-status-display) is used in the rendering of the preview: `By {post.author} · {formatDate(post.createdAt)} · {post.status}`
+  - In Editor.tsx getPostValidationErrors and ValidationIssue (from postkit-validation-library)
+  when issues is set `const issues = getPostValidationErrors(candidate)`
+  in function `function mapValidationIssuesToFields`
+  - In PostList.tsx: readingTime, formatTime (from postkit-reading-time) and formatDate (from postkit-date-status-display). In the rendered post `<p className="text-xs text-gray-500 mt-1">{formatTime(readingTime(post.body))} to read</p>`, `<p className="text-xs text-gray-500 mt-1">created at {formatDate(post.createdAt)}</p>`, 
+
+ View Boundaries: 
 

@@ -1,5 +1,14 @@
 import { create } from 'zustand'
-import type { Post } from '../types'
+import type { Post, PostStatus } from '../types'
+
+// StatusFilter will be filtering by PostStatus or not filtering at all and showing all
+export type StatusFilter = PostStatus | 'all'
+
+/** Sort by created/updated date vs title (which date field is used is decided when wiring `postkit-filter-sort`). */
+export type ListSortBy = 'date' | 'title'
+
+/** `asc` / `desc`: for dates = older→newer vs newer→older; for titles = A→Z vs Z→A (exact mapping in sort UI). */
+export type ListSortDirection = 'asc' | 'desc'
 
 // zustand store lives in browser memory and is gone when the page is refreshed
 
@@ -47,11 +56,29 @@ type PostStore = {
   posts: Post[]
   selectedPostId: string | null
 
-  // ACTIONS
+  // these fields hold UI state and are exported with the PostStore, can be accessed by any file that imports the store
+  // we're defining the fields and what values are allowed
+  /** search box text; empty = no search term. */
+  searchQuery: string
+  /**`'all'` = any status; otherwise restrict to that status. */
+  statusFilter: StatusFilter
+  /** substring or exact tag string using filter helper; empty = any tag. */
+  tagFilter: string
+  /** what to sort by. */
+  sortBy: ListSortBy
+  /** direction: pairs with `sortBy` (newest vs oldest, A–Z vs Z–A). */
+  sortDirection: ListSortDirection
+
+  // ACTIONS (and setters that actually update the state fortheir corresponding field)
   setSelectedPostId: (id: string | null) => void
   addPost: (post: Post) => void
   updatePost: (id: string, changes: Partial<Post>) => void
   deletePost: (id: string) => void
+  setSearchQuery: (query: string) => void
+  setStatusFilter: (filter: StatusFilter) => void
+  setTagFilter: (tag: string) => void
+  setSortBy: (sortBy: ListSortBy) => void
+  setSortDirection: (direction: ListSortDirection) => void
 }
 
 // create() builds the store. The function receives `set` which lets you update state.
@@ -60,8 +87,20 @@ export const usePostStore = create<PostStore>((set) => ({
   posts: SAMPLE_POSTS,
   selectedPostId: null,
 
+  searchQuery: '',
+  statusFilter: 'all',
+  tagFilter: '',
+  sortBy: 'date',
+  sortDirection: 'desc',
+
   // Action: set selectedPostId to the given id (or null to deselect)
   setSelectedPostId: (id) => set({ selectedPostId: id }),
+
+  setSearchQuery: (searchQuery) => set({ searchQuery }),
+  setStatusFilter: (statusFilter) => set({ statusFilter }),
+  setTagFilter: (tagFilter) => set({ tagFilter }),
+  setSortBy: (sortBy) => set({ sortBy }),
+  setSortDirection: (sortDirection) => set({ sortDirection }),
 
   // Action: add a new post to the array
   addPost: (post) =>
