@@ -18,6 +18,7 @@ export default defineConfig({
       ),
       // Published package has no `index.js`; shim re-exports from published source.
       'postkit-storage-lib': path.join(projectRoot, 'src/shims/postkit-storage-lib.ts'),
+      'postkit-excerpt': path.join(projectRoot, 'src/shims/postkit-excerpt.ts'),
     },
   },
   // Help Vitest/Vite bundle classmate ESM packages that use extensionless `./file` imports.
@@ -25,7 +26,9 @@ export default defineConfig({
     noExternal: [/^postkit-/],
   },
   test: {
+    passWithNoTests: true,
     environment: 'jsdom',
+    globals: true,
     setupFiles: ['./src/test/setup.ts'],
     // Classmate packages often use extensionless `./file` imports in `dist/`; inline so Vite
     // resolves them the same way as the app dev server.

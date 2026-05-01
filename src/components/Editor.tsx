@@ -222,7 +222,7 @@ function Editor() {
                 return next
               })
             }}
-            placeholder="Enter post title..."
+            placeholder='e.g. “Tis But a Scratch”, The Rabbit of Caerbannog…'
             aria-invalid={Boolean(fieldErrors.title)}
             aria-describedby={fieldErrors.title ? 'editor-title-error' : undefined}
             className={`mt-1 block w-full border rounded p-2 ${fieldErrors.title ? 'border-red-500' : 'border-gray-300'}`}
@@ -240,7 +240,7 @@ function Editor() {
             type="text"
             value={formData.author}
             onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-            placeholder="Author name..."
+            placeholder="e.g. Brave Sir Robin, Dennis the Constitutional Peasant…"
             className="mt-1 block w-full border border-gray-300 rounded p-2"
           />
         </label>
@@ -261,7 +261,7 @@ function Editor() {
       })
     }}
     rows={6}
-    placeholder="Write your post content..."
+    placeholder="Spam, llamas, and the air-speed velocity of an unladen swallow—go on."
     aria-invalid={Boolean(fieldErrors.body)}
     aria-describedby={fieldErrors.body ? 'editor-body-error' : undefined}
     className={`mt-1 block w-full border rounded p-2 ${fieldErrors.body ? 'border-red-500' : 'border-gray-300'}`}
@@ -279,7 +279,7 @@ function Editor() {
             type="text"
             value={formData.tags}
             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-            placeholder="comedy, grail, knights..."
+            placeholder="shrubbery, elderberries, comfy chair…"
             className="mt-1 block w-full border border-gray-300 rounded p-2"
           />
         </label>
@@ -290,7 +290,7 @@ function Editor() {
             type="text"
             value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            placeholder="e.g. Holy Grail, Flying Circus..."
+            placeholder="e.g. Holy Grail, Spanish Inquisition sketch…"
             className="mt-1 block w-full border border-gray-300 rounded p-2"
           />
         </label>

@@ -61,7 +61,7 @@ function PostList() {
           type="search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search posts…"
+          placeholder="Seek the Holy Grail of posts…"
           className="mt-1 block w-full border border-gray-300 rounded p-2"
           aria-label="Search posts"
         />
@@ -89,7 +89,7 @@ function PostList() {
           list="post-tag-filter-options"
           value={tagFilter}
           onChange={(e) => setTagFilter(e.target.value)}
-          placeholder="Filter by tag…"
+          placeholder="Elderberries, shrubbery, swallows carrying coconuts…"
           className="mt-1 block w-full border border-gray-300 rounded p-2"
           aria-label="Filter by tag"
         />
