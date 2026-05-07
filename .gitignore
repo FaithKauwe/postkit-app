@@ -24,7 +24,7 @@ dist-ssr
 *.sw?
 requirements.md
 setupsteps.md
-integration-testing.md
+integration-testing.mdu just 
 .env
 .env.*
 !.env.example

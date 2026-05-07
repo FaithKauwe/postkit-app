@@ -22,6 +22,7 @@ export type Post = {
   status: PostStatus
   createdAt: string
   updatedAt: string
+  publishedAt?: string
 }
 
 // this function will get used by the wrapper method in storage.ts. it converts the post objects to JSON strings to store in the shim

@@ -10,4 +10,6 @@ export type Post = {
   status: PostStatus
   createdAt: string
   updatedAt: string
+  /** ISO timestamp when status first became `published`; omit until then. */
+  publishedAt?: string
 }
