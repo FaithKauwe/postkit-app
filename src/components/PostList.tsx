@@ -5,6 +5,7 @@ import { formatDate } from 'postkit-date-status-display'
 import { readingTime, formatTime } from 'postkit-reading-time'
 import { searchPosts } from 'postkit-search-library'
 import { filterByStatus, filterByTag, sortByDate, sortByTitle } from 'postkit-filter-sort'
+import type { Post } from '../types'
 
 function PostList() {
   // Pull what we need from the store — no props needed!
@@ -136,7 +137,7 @@ function PostList() {
             {posts.length === 0 ? 'No posts yet.' : 'No posts match your search.'}
           </p>
         ) : (
-          visiblePosts.map((post) => (
+          (visiblePosts as Post[]).map((post) => (
             <div
               key={post.id}
               onClick={() => setSelectedPostId(post.id)}
@@ -154,7 +155,11 @@ function PostList() {
               </div>
               <p className="text-sm text-gray-500 mt-1">by {post.author}</p>
               <p className="text-xs text-gray-500 mt-1">created at {formatDate(post.createdAt)}</p>
-              {post.updatedAt !== post.createdAt ? (
+              {post.status === 'published' ? (
+                <p className="text-xs text-gray-500 mt-1">
+                  published {formatDate(post.publishedAt ?? post.updatedAt)}
+                </p>
+              ) : post.updatedAt !== post.createdAt ? (
                 <p className="text-xs text-gray-500 mt-1">
                   updated {formatDate(post.updatedAt)}
                 </p>
