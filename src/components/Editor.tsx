@@ -41,9 +41,9 @@ function buildCandidatePost(args: {
   const status = formData.status as Post['status']
 
   if (selectedPostId === null) {
-  // build a full new post object with all fields supplied by the user input from the form
-    return {
-      id: crypto.randomUUID(),  // crypto is a global object available in all modern browsers. guaranteed to be unique
+     // build a full new post object with all fields supplied by the user input from the form
+    const newPostBase = {
+      id: crypto.randomUUID(), // crypto is a global object available in all modern browsers. guaranteed to be unique
       title: formData.title,
       body: formData.body,
       author: formData.author,
@@ -53,12 +53,18 @@ function buildCandidatePost(args: {
       createdAt: now,
       updatedAt: now,
     }
+  // use the spread operaot to add the publishedAt: now attribute to the newPostBase object
+  // otherwise leave it blank, no new key/value pair on the object
+    if (status === 'published') {
+      return { ...newPostBase, publishedAt: now }
+    }
+    return newPostBase
   }
 
   const existing = posts.find((p) => p.id === selectedPostId)
   if (!existing) return null
 
-  return {
+  const common = {
     ...existing,
     title: formData.title,
     body: formData.body,
@@ -68,6 +74,21 @@ function buildCandidatePost(args: {
     status,
     updatedAt: now,
   }
+
+  if (status !== 'published') {
+    return common
+  }
+
+  let nextPublishedAt: string
+  if (existing.status !== 'published') {
+    nextPublishedAt = now
+  } else if (existing.publishedAt === undefined) {
+    nextPublishedAt = now
+  } else {
+    nextPublishedAt = existing.publishedAt
+  }
+
+  return { ...common, publishedAt: nextPublishedAt }
 }
 
 function Editor() {
@@ -153,6 +174,9 @@ function Editor() {
         category: candidate.category,
         status: candidate.status,
         updatedAt: candidate.updatedAt,
+        ...(candidate.publishedAt !== undefined
+          ? { publishedAt: candidate.publishedAt }
+          : {}),
       })
     }
   }

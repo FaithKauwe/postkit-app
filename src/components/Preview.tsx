@@ -54,7 +54,11 @@ function Preview() {
         </p>
         <p className="text-sm text-gray-500">
           By {post.author} · Posted {formatDate(post.createdAt)}
-          {post.updatedAt !== post.createdAt ? ` · Updated ${formatDate(post.updatedAt)}` : ''}
+          {post.status === 'published'
+            ? ` · Published ${formatDate(post.publishedAt ?? post.updatedAt)}`
+            : post.updatedAt !== post.createdAt
+              ? ` · Updated ${formatDate(post.updatedAt)}`
+              : ''}
           {' · '}
           {formatTime(readingTime(post.body))} to read ·{' '}
           <span

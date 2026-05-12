@@ -25,6 +25,7 @@ const SAMPLE_POSTS: Post[] = [
     status: 'published',
     createdAt: '2024-01-15T10:00:00.000Z',
     updatedAt: '2024-01-15T10:00:00.000Z',
+    publishedAt: '2024-01-15T10:00:00.000Z',
   },
   {
     id: '2',
