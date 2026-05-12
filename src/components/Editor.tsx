@@ -6,7 +6,7 @@ import {
 } from 'postkit-validation-library'
 import type { Post } from '../types'
 
-/** First message per field from the library’s issues list (inline errors under inputs). */
+/** First message per field from the library's issues list (inline errors under inputs). */
 function mapValidationIssuesToFields(
   issues: ValidationIssue[],
 ): Partial<Record<'title' | 'body' | 'status' | 'post', string>> {
@@ -41,7 +41,7 @@ function buildCandidatePost(args: {
   const status = formData.status as Post['status']
 
   if (selectedPostId === null) {
-     // build a full new post object with all fields supplied by the user input from the form
+    // build a full new post object with all fields supplied by the user input from the form
     const newPostBase = {
       id: crypto.randomUUID(), // crypto is a global object available in all modern browsers. guaranteed to be unique
       title: formData.title,
@@ -53,8 +53,8 @@ function buildCandidatePost(args: {
       createdAt: now,
       updatedAt: now,
     }
-  // use the spread operaot to add the publishedAt: now attribute to the newPostBase object
-  // otherwise leave it blank, no new key/value pair on the object
+    // use the spread operator to add the publishedAt: now attribute to the newPostBase object
+    // otherwise leave it blank, no new key/value pair on the object
     if (status === 'published') {
       return { ...newPostBase, publishedAt: now }
     }
@@ -65,10 +65,10 @@ function buildCandidatePost(args: {
   if (!existing) return null
 
   // common is one in memory object meant to be the post after an edit, before you decide the final publishedAt rule.
-  // “Common” here means shared by both outcomes of the edit branch:
+  // "Common" here means shared by both outcomes of the edit branch:
   // status not published → you return common as-is (publishedAt stays whatever came through ...existing).
   // status is published → you return { ...common, publishedAt: nextPublishedAt }.
-  // newPostBase is a simalr object but lives in the creating a post flow, while common lives
+  // newPostBase is a similar object but lives in the creating a post flow, while common lives
   // in the Editing an Existing Post flow
   const common = {
     ...existing,
@@ -84,9 +84,9 @@ function buildCandidatePost(args: {
   if (status !== 'published') {
     return common
   }
-// nextPublishedAt establishes the timestamp during the editing flow (as opposed to the Creata A New Post flow)
-// and nextPublishedAt will also cover older versions of the timestamp where publisjedAt wasn't set
 
+  // nextPublishedAt establishes the timestamp during the editing flow (as opposed to the Create A New Post flow)
+  // and nextPublishedAt will also cover older versions of the timestamp where publishedAt wasn't set
   let nextPublishedAt: string
   if (existing.status !== 'published') {
     nextPublishedAt = now
@@ -101,13 +101,12 @@ function buildCandidatePost(args: {
 
 function Editor() {
   // Get posts and selectedPostId from Zustand store. these don't get imported with other imports. they are part of the
-  // usePostStore funciton, so only that one gets imported, then these all get assigned to local consts 
+  // usePostStore function, so only that one gets imported, then these all get assigned to local consts
   const posts = usePostStore((state) => state.posts)
   const selectedPostId = usePostStore((state) => state.selectedPostId)
   const setSelectedPostId = usePostStore((state) => state.setSelectedPostId)
   const addPost = usePostStore((state) => state.addPost)
   const updatePost = usePostStore((state) => state.updatePost)
-
 
   // formData is the name of the object and setFormData is the function to update it
   // the object inside is the initial value — all empty strings, status defaults to 'draft'
@@ -145,8 +144,8 @@ function Editor() {
     // create timestamp
     const now = new Date().toISOString()
     // Convert tags string to array (split by comma, trim whitespace)
-    const tagsArray = formData.tags.split(',').map((t) => t.trim()).filter((t) => t)   
-    
+    const tagsArray = formData.tags.split(',').map((t) => t.trim()).filter((t) => t)
+
     const candidate = buildCandidatePost({
       formData,
       tagsArray,
@@ -173,7 +172,7 @@ function Editor() {
       addPost(candidate)
       setSelectedPostId(candidate.id)  // set the id and highlight in the list, load in the editor (ui experience)
     } else {
-      // update existing post, since the form fields shares one state, give all fields as args and replace the entire form, the changes will override any differeing originals
+      // update existing post, since the form fields shares one state, give all fields as args and replace the entire form, the changes will override any differing originals
       updatePost(selectedPostId, {
         title: candidate.title,
         body: candidate.body,
@@ -188,6 +187,7 @@ function Editor() {
       })
     }
   }
+
   // useEffect is a react hook that detects a change- runs when selectedPostId changes
   // finds the selected post and copies its data into the form
   useEffect(() => {
@@ -212,152 +212,153 @@ function Editor() {
     setFieldErrors({})
   }, [selectedPostId])
 
+  const inputClass = 'mt-1 block w-full border border-yellow-700 rounded p-2 bg-stone-900 text-yellow-50 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-sky-400'
+  const labelTextClass = 'text-yellow-600 text-sm font-semibold uppercase tracking-wide'
+
   return (
-        <section className="mb-8 p-4 bg-white rounded shadow">
-        <h2 className="text-xl font-semibold mb-4">Editor</h2>
+    <section className="mb-8 p-5 rounded-lg border border-yellow-700" style={{ background: '#292524' }}>
+      <h2 className="text-xl font-bold mb-4 !text-yellow-400 border-b border-yellow-800 pb-2">📜 Editor</h2>
 
-        <div className="flex gap-2 mb-4">
-  <button 
-    onClick={handleNewPost}
-    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-  >
-    New Post
-  </button>
-  <button 
-    onClick={handleSave}
-    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-  >
-    Save
-  </button>
-</div>
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={handleNewPost}
+          className="px-4 py-2 rounded font-semibold text-sm border border-sky-600 text-sky-300 hover:bg-sky-900 transition-colors"
+        >
+          + New Post
+        </button>
+        <button
+          onClick={handleSave}
+          className="px-4 py-2 rounded font-semibold text-sm bg-red-800 text-yellow-100 border border-red-600 hover:bg-red-700 transition-colors"
+        >
+          Save
+        </button>
+      </div>
 
-        {fieldErrors.post ? (
-          <p className="text-red-600 text-sm mb-4" role="alert">
-            {fieldErrors.post}
-          </p>
+      {fieldErrors.post ? (
+        <p className="text-red-400 text-sm mb-4" role="alert">{fieldErrors.post}</p>
+      ) : null}
+
+      {/* Title field */}
+      <label className="block mb-4">
+        <span className={labelTextClass}>Title</span>
+        {/* clear the title error msg after user starts fixing the field, where prev is the last object in fieldErrors that React passes */}
+        <input
+          id="editor-title"
+          type="text"
+          value={formData.title}
+          onChange={(e) => {
+            const title = e.target.value
+            setFormData({ ...formData, title })
+            setFieldErrors((prev) => {
+              if (!prev.title) return prev
+              const next = { ...prev }
+              delete next.title
+              return next
+            })
+          }}
+          placeholder='e.g. "Tis But a Scratch", The Rabbit of Caerbannog…'
+          aria-invalid={Boolean(fieldErrors.title)}
+          aria-describedby={fieldErrors.title ? 'editor-title-error' : undefined}
+          className={`${inputClass} ${fieldErrors.title ? '!border-red-500' : ''}`}
+        />
+        {fieldErrors.title ? (
+          <p id="editor-title-error" className="text-red-400 text-sm mt-1" role="alert">{fieldErrors.title}</p>
         ) : null}
-        {/* Title field */}
-        <label className="block mb-4">
-          <span className="text-gray-700">Title</span>
-          {/* clear the title error msg after user starts fixing the field, where prev is the last object in fieldErrors that React passes */}
-          <input
-            id="editor-title"
-            type="text"
-            value={formData.title}
-            onChange={(e) => {
-              const title = e.target.value
-              setFormData({ ...formData, title })
-              setFieldErrors((prev) => {
-                if (!prev.title) return prev
-                const next = { ...prev }
-                delete next.title
-                return next
-              })
-            }}
-            placeholder='e.g. “Tis But a Scratch”, The Rabbit of Caerbannog…'
-            aria-invalid={Boolean(fieldErrors.title)}
-            aria-describedby={fieldErrors.title ? 'editor-title-error' : undefined}
-            className={`mt-1 block w-full border rounded p-2 ${fieldErrors.title ? 'border-red-500' : 'border-gray-300'}`}
-          />
-          {fieldErrors.title ? (
-            <p id="editor-title-error" className="text-red-600 text-sm mt-1" role="alert">
-              {fieldErrors.title}
-            </p>
-          ) : null}
-        </label>
-        {/* Author field */}
-        <label className="block mb-4">
-          <span className="text-gray-700">Author</span>
-          <input
-            type="text"
-            value={formData.author}
-            onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-            placeholder="e.g. Brave Sir Robin, Dennis the Constitutional Peasant…"
-            className="mt-1 block w-full border border-gray-300 rounded p-2"
-          />
-        </label>
-        <label className="block mb-4">
-   {/* Body field */}
-  <span className="text-gray-700">Body</span>
-  <textarea
-    id="editor-body"
-    value={formData.body}
-    onChange={(e) => {
-      const body = e.target.value
-      setFormData({ ...formData, body })
-      setFieldErrors((prev) => {
-        if (!prev.body) return prev
-        const next = { ...prev }
-        delete next.body
-        return next
-      })
-    }}
-    rows={6}
-    placeholder="Spam, llamas, and the air-speed velocity of an unladen swallow—go on."
-    aria-invalid={Boolean(fieldErrors.body)}
-    aria-describedby={fieldErrors.body ? 'editor-body-error' : undefined}
-    className={`mt-1 block w-full border rounded p-2 ${fieldErrors.body ? 'border-red-500' : 'border-gray-300'}`}
-  />
-  {fieldErrors.body ? (
-    <p id="editor-body-error" className="text-red-600 text-sm mt-1" role="alert">
-      {fieldErrors.body}
-    </p>
-  ) : null}
-</label>
-       {/* Tags field */}
-       <label className="block mb-4">
-          <span className="text-gray-700">Tags (comma-separated)</span>
-          <input
-            type="text"
-            value={formData.tags}
-            onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-            placeholder="shrubbery, elderberries, comfy chair…"
-            className="mt-1 block w-full border border-gray-300 rounded p-2"
-          />
-        </label>
-        {/* Category field */}
-        <label className="block mb-4">
-          <span className="text-gray-700">Category</span>
-          <input
-            type="text"
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            placeholder="e.g. Holy Grail, Spanish Inquisition sketch…"
-            className="mt-1 block w-full border border-gray-300 rounded p-2"
-          />
-        </label>
-        {/* Status field uses a dropdown menu for selection, only 3 choices*/}
-<label className="block mb-4">
-  <span className="text-gray-700">Status</span>
-  <select
-    id="editor-status"
-    value={formData.status}
-    onChange={(e) => {
-      const status = e.target.value
-      setFormData({ ...formData, status })
-      setFieldErrors((prev) => {
-        if (!prev.status) return prev
-        const next = { ...prev }
-        delete next.status
-        return next
-      })
-    }}
-    aria-invalid={Boolean(fieldErrors.status)}
-    aria-describedby={fieldErrors.status ? 'editor-status-error' : undefined}
-    className={`mt-1 block w-full border rounded p-2 ${fieldErrors.status ? 'border-red-500' : 'border-gray-300'}`}
-  >
-    <option value="draft">Draft</option>
-    <option value="review">Review</option>
-    <option value="published">Published</option>
-  </select>
-  {fieldErrors.status ? (
-    <p id="editor-status-error" className="text-red-600 text-sm mt-1" role="alert">
-      {fieldErrors.status}
-    </p>
-  ) : null}
-</label>
-      </section>
-    )
+      </label>
+
+      {/* Author field */}
+      <label className="block mb-4">
+        <span className={labelTextClass}>Author</span>
+        <input
+          type="text"
+          value={formData.author}
+          onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+          placeholder="e.g. Brave Sir Robin, Dennis the Constitutional Peasant…"
+          className={inputClass}
+        />
+      </label>
+
+      {/* Body field */}
+      <label className="block mb-4">
+        <span className={labelTextClass}>Body</span>
+        <textarea
+          id="editor-body"
+          value={formData.body}
+          onChange={(e) => {
+            const body = e.target.value
+            setFormData({ ...formData, body })
+            setFieldErrors((prev) => {
+              if (!prev.body) return prev
+              const next = { ...prev }
+              delete next.body
+              return next
+            })
+          }}
+          rows={6}
+          placeholder="Spam, llamas, and the air-speed velocity of an unladen swallow—go on."
+          aria-invalid={Boolean(fieldErrors.body)}
+          aria-describedby={fieldErrors.body ? 'editor-body-error' : undefined}
+          className={`${inputClass} ${fieldErrors.body ? '!border-red-500' : ''}`}
+        />
+        {fieldErrors.body ? (
+          <p id="editor-body-error" className="text-red-400 text-sm mt-1" role="alert">{fieldErrors.body}</p>
+        ) : null}
+      </label>
+
+      {/* Tags field */}
+      <label className="block mb-4">
+        <span className={labelTextClass}>Tags (comma-separated)</span>
+        <input
+          type="text"
+          value={formData.tags}
+          onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+          placeholder="shrubbery, elderberries, comfy chair…"
+          className={inputClass}
+        />
+      </label>
+
+      {/* Category field */}
+      <label className="block mb-4">
+        <span className={labelTextClass}>Category</span>
+        <input
+          type="text"
+          value={formData.category}
+          onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+          placeholder="e.g. Holy Grail, Spanish Inquisition sketch…"
+          className={inputClass}
+        />
+      </label>
+
+      {/* Status field uses a dropdown menu for selection, only 3 choices */}
+      <label className="block mb-4">
+        <span className={labelTextClass}>Status</span>
+        <select
+          id="editor-status"
+          value={formData.status}
+          onChange={(e) => {
+            const status = e.target.value
+            setFormData({ ...formData, status })
+            setFieldErrors((prev) => {
+              if (!prev.status) return prev
+              const next = { ...prev }
+              delete next.status
+              return next
+            })
+          }}
+          aria-invalid={Boolean(fieldErrors.status)}
+          aria-describedby={fieldErrors.status ? 'editor-status-error' : undefined}
+          className={`${inputClass} ${fieldErrors.status ? '!border-red-500' : ''}`}
+        >
+          <option value="draft">Draft</option>
+          <option value="review">Review</option>
+          <option value="published">Published</option>
+        </select>
+        {fieldErrors.status ? (
+          <p id="editor-status-error" className="text-red-400 text-sm mt-1" role="alert">{fieldErrors.status}</p>
+        ) : null}
+      </label>
+    </section>
+  )
 }
 
 export default Editor

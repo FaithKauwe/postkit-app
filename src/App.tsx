@@ -21,11 +21,11 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen p-8" style={{ background: '#1C1917' }}>
       {/* ===== SECTION 1: HEADER ===== */}
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">PostKit</h1>
-        <p className="text-gray-600">Manage your posts from draft to published</p>
+      <header className="mb-8 border-b-4 border-yellow-600 pb-4">
+        <h1 className="text-4xl font-black tracking-tight" style={{ color: '#EAB308' }}>⚔️ PostKit</h1>
+        <p style={{ color: '#7DD3FC' }} className="text-sm mt-1 font-medium">We are the knights who say… publish.</p>
       </header>
 
       {/* ===== SECTION 2: POST LIST (+ search / filter in PostList) ===== */}

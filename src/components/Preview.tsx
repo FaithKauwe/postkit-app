@@ -32,28 +32,28 @@ function Preview() {
   // If nothing is selected, show placeholder
   if (!post) {
     return (
-      <section className="mb-8 p-4 bg-white rounded shadow">
-        <h2 className="text-xl font-semibold mb-4">Preview</h2>
-        <p className="text-gray-500">Select a post to preview it here</p>
+      <section className="mb-8 p-5 rounded-lg border border-yellow-700" style={{ background: '#292524' }}>
+        <h2 className="text-xl font-bold mb-4 !text-yellow-400 border-b border-yellow-800 pb-2">🏰 Preview</h2>
+        <p className="text-stone-400">Select a post to preview it here</p>
       </section>
     )
   }
 
   // Show the selected post
   return (
-    <section className="mb-8 p-4 bg-white rounded shadow">
-      <h2 className="text-xl font-semibold mb-4">Preview</h2>
-      
-      <article className="prose">
-        <h1 className="text-2xl font-bold text-gray-900">{post.title}</h1>
-        <p className="text-sm text-gray-600 mt-1">
+    <section className="mb-8 p-5 rounded-lg border border-yellow-700" style={{ background: '#292524' }}>
+      <h2 className="text-xl font-bold mb-4 !text-yellow-400 border-b border-yellow-800 pb-2">🏰 Preview</h2>
+
+      <article>
+        <h1 className="text-2xl font-bold text-yellow-50 mb-1">{post.title}</h1>
+        <p className="text-sm text-stone-400 mt-1">
           Slug{' '}
-          <code className="text-sm bg-gray-100 px-2 py-0.5 rounded text-gray-900">
+          <code className="text-sm bg-stone-800 px-2 py-0.5 rounded text-sky-300 border border-stone-600">
             {slug ?? '—'}
           </code>
         </p>
-        <p className="text-sm text-gray-500">
-          By {post.author} · Posted {formatDate(post.createdAt)}
+        <p className="text-sm text-stone-300 mt-2">
+          By <span className="text-sky-300">{post.author}</span> · Posted {formatDate(post.createdAt)}
           {post.status === 'published'
             ? ` · Published ${formatDate(post.publishedAt ?? post.updatedAt)}`
             : post.updatedAt !== post.createdAt
@@ -64,27 +64,27 @@ function Preview() {
           <span
             className={`inline-block align-middle text-xs font-medium px-2 py-0.5 rounded border ${
               statusColorTok === 'green'
-                ? 'bg-green-50 text-green-900 border-green-300'
+                ? 'bg-red-900 text-red-200 border-red-700'
                 : statusColorTok === 'yellow'
-                  ? 'bg-amber-50 text-amber-900 border-amber-300'
-                  : 'bg-gray-50 text-gray-800 border-gray-300'
+                  ? 'bg-yellow-900 text-yellow-200 border-yellow-700'
+                  : 'bg-stone-700 text-stone-300 border-stone-500'
             }`}
           >
             {statusLabel}
           </span>
         </p>
 
-        <p className="mt-4 text-gray-700 leading-relaxed">{createExcerpt(post.body, 220)}</p>
-        
-        <div className="mt-4 flex gap-2">
+        <p className="mt-4 text-stone-300 leading-relaxed">{createExcerpt(post.body, 220)}</p>
+
+        <div className="mt-4 flex flex-wrap gap-2">
           {post.tags.map((tag) => (
-            <span key={tag} className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+            <span key={tag} className="text-xs bg-sky-900 text-sky-200 border border-sky-700 px-2 py-0.5 rounded">
               {tag}
             </span>
           ))}
         </div>
-        
-        <p className="mt-4 text-xs text-gray-400">Category: {post.category}</p>
+
+        <p className="mt-4 text-xs text-stone-500">Category: {post.category}</p>
       </article>
     </section>
   )

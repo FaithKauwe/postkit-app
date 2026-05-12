@@ -52,28 +52,32 @@ function PostList() {
   // render the seaerch query input box for the user
   // after introducing the search logic, posts gets replaced with visiblePosts.  If seearch query is empty, visiblePosts array that
   // gets mapped over is just the og posts array with no search filter applied
-  return (
-    <section className="mb-8 p-4 bg-white rounded shadow">
-      <h2 className="text-xl font-semibold mb-4">Your Posts</h2>
+  const inputClass = 'mt-1 block w-full border border-yellow-700 rounded p-2 bg-stone-900 text-yellow-50 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-sky-400'
+  const labelClass = 'block mb-4'
+  const labelTextClass = 'text-yellow-600 text-sm font-semibold uppercase tracking-wide'
 
-      <label className="block mb-4">
-        <span className="text-gray-700 text-sm">Search</span>
+  return (
+    <section className="mb-8 p-5 rounded-lg border border-yellow-700" style={{ background: '#292524' }}>
+      <h2 className="text-xl font-bold mb-4 !text-yellow-400 border-b border-yellow-800 pb-2">⚔️ Your Posts</h2>
+
+      <label className={labelClass}>
+        <span className={labelTextClass}>Search</span>
         <input
           type="search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Seek the Holy Grail of posts…"
-          className="mt-1 block w-full border border-gray-300 rounded p-2"
+          className={inputClass}
           aria-label="Search posts"
         />
       </label>
 
-      <label className="block mb-4">
-        <span className="text-gray-700 text-sm">Status</span>
+      <label className={labelClass}>
+        <span className={labelTextClass}>Status</span>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-          className="mt-1 block w-full border border-gray-300 rounded p-2"
+          className={inputClass}
           aria-label="Filter by status"
         >
           <option value="all">All statuses</option>
@@ -83,15 +87,15 @@ function PostList() {
         </select>
       </label>
 {/* datalist is a built in HTML feature. the browser decides how to show the options, I only provide the list of possible values, I don't write the filter for the suggestions */}
-      <label className="block mb-4">
-        <span className="text-gray-700 text-sm">Tag</span>
+      <label className={labelClass}>
+        <span className={labelTextClass}>Tag</span>
         <input
           type="text"
           list="post-tag-filter-options"
           value={tagFilter}
           onChange={(e) => setTagFilter(e.target.value)}
           placeholder="Elderberries, shrubbery, swallows carrying coconuts…"
-          className="mt-1 block w-full border border-gray-300 rounded p-2"
+          className={inputClass}
           aria-label="Filter by tag"
         />
         <datalist id="post-tag-filter-options">
@@ -101,12 +105,12 @@ function PostList() {
         </datalist>
       </label>
 {/* sorting controls */}
-      <label className="block mb-4">
-        <span className="text-gray-700 text-sm">Sort by</span>
+      <label className={labelClass}>
+        <span className={labelTextClass}>Sort by</span>
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as ListSortBy)}
-          className="mt-1 block w-full border border-gray-300 rounded p-2"
+          className={inputClass}
           aria-label="Sort by field"
         >
           <option value="date">Date created</option>
@@ -114,12 +118,12 @@ function PostList() {
         </select>
       </label>
 
-      <label className="block mb-4">
-        <span className="text-gray-700 text-sm">Sort direction</span>
+      <label className={labelClass}>
+        <span className={labelTextClass}>Sort direction</span>
         <select
           value={sortDirection}
           onChange={(e) => setSortDirection(e.target.value as ListSortDirection)}
-          className="mt-1 block w-full border border-gray-300 rounded p-2"
+          className={inputClass}
           aria-label="Sort direction"
         >
           <option value="asc">
@@ -131,9 +135,9 @@ function PostList() {
         </select>
       </label>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {visiblePosts.length === 0 ? (
-          <p className="text-gray-500 text-sm">
+          <p className="text-stone-400 text-sm">
             {posts.length === 0 ? 'No posts yet.' : 'No posts match your search.'}
           </p>
         ) : (
@@ -141,33 +145,40 @@ function PostList() {
             <div
               key={post.id}
               onClick={() => setSelectedPostId(post.id)}
-              className={`p-4 border rounded cursor-pointer ${
+              className={`p-4 border rounded-lg cursor-pointer transition-colors ${
                 selectedPostId === post.id
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:bg-gray-50'
+                  ? 'border-sky-400 bg-sky-950'
+                  : 'border-yellow-800 hover:border-yellow-600 hover:bg-stone-800'
               }`}
+              style={{ background: selectedPostId === post.id ? '#0c2233' : '#1c1917' }}
             >
               <div className="flex justify-between items-start">
-                <h3 className="font-medium text-gray-900">{post.title}</h3>
-                <span className="text-sm px-2 py-1 rounded bg-gray-100 text-gray-600">
+                <h3 className="font-semibold text-yellow-50">{post.title}</h3>
+                <span className={`text-xs px-2 py-1 rounded font-medium ${
+                  post.status === 'published'
+                    ? 'bg-red-900 text-red-200 border border-red-700'
+                    : post.status === 'review'
+                      ? 'bg-yellow-900 text-yellow-200 border border-yellow-700'
+                      : 'bg-stone-700 text-stone-300 border border-stone-500'
+                }`}>
                   {post.status}
                 </span>
               </div>
-              <p className="text-sm text-gray-500 mt-1">by {post.author}</p>
-              <p className="text-xs text-gray-500 mt-1">created at {formatDate(post.createdAt)}</p>
+              <p className="text-sm text-sky-300 mt-1">by {post.author}</p>
+              <p className="text-xs text-stone-400 mt-1">created {formatDate(post.createdAt)}</p>
               {post.status === 'published' ? (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-yellow-500 mt-1">
                   published {formatDate(post.publishedAt ?? post.updatedAt)}
                 </p>
               ) : post.updatedAt !== post.createdAt ? (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-stone-400 mt-1">
                   updated {formatDate(post.updatedAt)}
                 </p>
               ) : null}
-              <p className="text-xs text-gray-500 mt-1">{formatTime(readingTime(post.body))} to read</p>
-              <div className="mt-2 flex gap-2">
+              <p className="text-xs text-stone-500 mt-1">{formatTime(readingTime(post.body))} to read</p>
+              <div className="mt-2 flex flex-wrap gap-2">
                 {post.tags.map((tag) => (
-                  <span key={tag} className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                  <span key={tag} className="text-xs bg-sky-900 text-sky-200 border border-sky-700 px-2 py-0.5 rounded">
                     {tag}
                   </span>
                 ))}
