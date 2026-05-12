@@ -64,6 +64,12 @@ function buildCandidatePost(args: {
   const existing = posts.find((p) => p.id === selectedPostId)
   if (!existing) return null
 
+  // common is one in memory object meant to be the post after an edit, before you decide the final publishedAt rule.
+  // “Common” here means shared by both outcomes of the edit branch:
+  // status not published → you return common as-is (publishedAt stays whatever came through ...existing).
+  // status is published → you return { ...common, publishedAt: nextPublishedAt }.
+  // newPostBase is a simalr object but lives in the creating a post flow, while common lives
+  // in the Editing an Existing Post flow
   const common = {
     ...existing,
     title: formData.title,
@@ -78,6 +84,8 @@ function buildCandidatePost(args: {
   if (status !== 'published') {
     return common
   }
+// nextPublishedAt establishes the timestamp during the editing flow (as opposed to the Creata A New Post flow)
+// and nextPublishedAt will also cover older versions of the timestamp where publisjedAt wasn't set
 
   let nextPublishedAt: string
   if (existing.status !== 'published') {

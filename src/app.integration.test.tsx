@@ -365,4 +365,90 @@ describe('PostKit integration', () => {
     expect(within(article).getByText('wensleydale')).toBeInTheDocument()
     expect(within(article).getByText('peppercorn')).toBeInTheDocument()
   })
+
+  it('advancing a draft to published sets publishedAt; re-saving while still published preserves it', async () => {
+    const seed = makePost({
+      id: 'publish-transition',
+      title: 'The Larch',
+      body: 'The larch. Twenty characters minimum here.',
+      author: 'Narrator',
+      tags: ['trees'],
+      category: 'Nature Intermission',
+      status: 'draft',
+    })
+    usePostStore.setState({ posts: [seed], selectedPostId: null, ...INITIAL_UI })
+
+    const user = userEvent.setup()
+    render(<App />)
+
+    // select the post and switch it to published
+    await user.click(screen.getByRole('heading', { level: 3, name: seed.title }))
+    const statusSelect = screen.getByRole('combobox', { name: /^status$/i })
+    await user.selectOptions(statusSelect, 'published')
+    await user.click(screen.getByRole('button', { name: /^save$/i }))
+
+    const afterFirstSave = usePostStore.getState().posts.find((p) => p.id === 'publish-transition')
+    expect(afterFirstSave?.status).toBe('published')
+    expect(afterFirstSave?.publishedAt).toBeDefined()
+    const firstPublishedAt = afterFirstSave?.publishedAt
+
+    // save again without changing anything — publishedAt must not change
+    await user.click(screen.getByRole('button', { name: /^save$/i }))
+
+    const afterSecondSave = usePostStore.getState().posts.find((p) => p.id === 'publish-transition')
+    expect(afterSecondSave?.publishedAt).toBe(firstPublishedAt)
+  })
+
+  it('preview shows Published date for a published post and Updated date for an edited draft', async () => {
+    const publishedTitle = 'The Cheese Shop'
+    const draftTitle = 'Dead Parrot Incident'
+    const publishedAt = '2025-03-01T12:00:00.000Z'
+    const createdAt = '2025-01-01T00:00:00.000Z'
+    const updatedAt = '2025-02-01T00:00:00.000Z'
+
+    usePostStore.setState({
+      posts: [
+        makePost({
+          id: 'prev-published',
+          title: publishedTitle,
+          body: 'Wensleydale? Not much call for it round here. Twenty chars.',
+          author: 'Mr. Praline',
+          category: 'Sketch',
+          tags: ['cheese'],
+          status: 'published',
+          createdAt,
+          updatedAt: publishedAt,
+          publishedAt,
+        }),
+        makePost({
+          id: 'prev-draft',
+          title: draftTitle,
+          body: 'This parrot is no more. Twenty characters minimum here.',
+          author: 'Mr. Praline',
+          category: 'Sketch',
+          tags: ['birds'],
+          status: 'draft',
+          createdAt,
+          updatedAt,
+        }),
+      ],
+      selectedPostId: null,
+      ...INITIAL_UI,
+    })
+
+    const user = userEvent.setup()
+    render(<App />)
+
+    // published post → preview should say "Published"
+    await user.click(screen.getByRole('heading', { level: 3, name: publishedTitle }))
+    const publishedArticle = screen.getByRole('article')
+    expect(publishedArticle.textContent).toContain('Published')
+    expect(publishedArticle.textContent).not.toContain('Updated')
+
+    // edited draft → preview should say "Updated"
+    await user.click(screen.getByRole('heading', { level: 3, name: draftTitle }))
+    const draftArticle = screen.getByRole('article')
+    expect(draftArticle.textContent).toContain('Updated')
+    expect(draftArticle.textContent).not.toContain('Published')
+  })
 })

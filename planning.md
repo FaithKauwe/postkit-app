@@ -227,3 +227,26 @@ Exit criteria:
 
  View Boundaries: 
 
+Requested publishedAt Change:
+Decision: Preview uses something truthful: e.g. show updatedAt and treat it as “last updated” until a real publishedAt exists after the next save that runs your new publish logic.
+One small detail to lock in (wording, not a second big decision):
+When you’re in that fallback, label it as last updated (or similar), not “published on,” so the copy matches the data. Same timestamp, wrong label ⇒ misleading.
+
+
+
+
+
+5. List (PostList.tsx) — optional for the written requirement
+The updated doc calls out preview; R1 still says created/updated. You can leave the list as-is or later mirror preview logic for UX consistency.
+
+6. Fix fixtures and types
+SAMPLE_POSTS in the store (published ones get publishedAt).
+src/test/factories.ts, app.integration.test.tsx, any smoke/other hardcoded Post objects.
+Duplicate Post shapes in src/shims/postkit-storage-lib.ts if present—keep in sync or import from types.ts.
+7. Tests
+Run suite; fix anything that asserts exact Post shape or snapshot text.
+Add one focused test: e.g. save draft→published asserts publishedAt set; save again published→published asserts publishedAt unchanged and updatedAt moves.
+8. Manual sanity
+Create → draft save → publish save → reload → preview shows publish date → edit published post → publishedAt stable.
+
+If you want strict “no guesses” for legacy published rows missing publishedAt, skip the updatedAt fallback and only show publish date once they’ve saved again as published.
